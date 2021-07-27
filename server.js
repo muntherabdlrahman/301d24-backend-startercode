@@ -6,26 +6,40 @@ const mongoose=require('mongoose');
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
-const port=process.env.port;
+const port=process.env.PORT;
+const testController=require('./controllers/test.controller')
+const ApiAxios=require('./controllers/api.controller')
 const {
     home,
     getFavoriteCoffee,
     createItemController,
     updateItemController,
     deleteItemController,
-    retreiveItemController
+    // retreiveItemsController
 }=require('./controllers/coffee.controller');
 
 mongoose.connect(`mongodb://127.0.0.1:27017/finalexam`, 
                 {useNewUrlParser: true, useUnifiedTopology:true});
 
-app.get('/',home);
+// app.get('/',home);
+app.get('/',(req,res)=>{res.send('Hello form backend')
+console.log('work')
+})
+
+
+
+
+app.get('/test', testController)
+app.get('/apiaxios',ApiAxios)
+
 app.get('/fav-list',getFavoriteCoffee);
-app.get('/retreive',retreiveItemController);
+// app.get('/retreive',retreiveItemsController);
 app.post('/create',createItemController);
 app.put('/update/:id',updateItemController);
 app.delete('/delete/:id',deleteItemController);
 
 app.listen(port, ()=>{
+    console.log(port)
     console.log('listening to port 8000');
+    
 });
